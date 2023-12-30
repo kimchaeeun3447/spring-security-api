@@ -12,7 +12,6 @@
 - test: 테스트
 - chore: 관리(maintain), 핵심 내용은 아닌 잡일 등
 
-
 ### Work Flow
 1. Jira에서 작업 생성 - Jira 티켓 확인
 2. 깃허브 이슈 생성
