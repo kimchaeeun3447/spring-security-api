@@ -52,12 +52,6 @@ public class JwtProvider {
                 .compact();
     }
 
-    // Spring Security 인증과정에서 권한 확인을 위한 권한 정보 획득
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(this.getAccount(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
     // JWT에서 회원의 accountId 획득
     public String getAccount(String token) {
         try {
@@ -94,5 +88,11 @@ public class JwtProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // Spring Security 인증과정에서 권한 확인을 위한 권한 정보 획득
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(this.getAccount(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }
