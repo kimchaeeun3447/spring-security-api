@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      enabled: true # H2 DB를 UI로 제공
+      path: /h2-console # H2 콘솔 Path
+  # DB로 H2 사용하기위한 정보
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL # In-Memory 모드, 데이터베이스 식별자 testdb, mysql 호환모드
+    username: teamIT
+    password: teamIT
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create # 이 옵션은 애플리케이션 실행 시점에 테이블을 drop 하고, 다시 생성한다
+    generate-ddl: 'true' # 스키마 생성을 콘솔에 출력
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true # 쿼리 로그 포맷 (정렬)
+        show_sql: true # 쿼리 로그 출력
+
+logging:
+  Level:
+    org.hibernate.SQL: debug # logger를 통해 하이버네이트 실행 SQL을 남긴다
+    org.hibernate.type: trace # SQL 실행 파라미터를 로그로 남긴다
+
+jwt:
+  secret:
+    key:
