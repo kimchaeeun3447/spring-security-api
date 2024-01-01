@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
@@ -35,41 +36,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(httpBasic ->
-                        httpBasic.disable()
+                .httpBasic(AbstractHttpConfigurer::disable
                 )
-                .csrf(csrf ->
-                        csrf.disable()
+                .csrf(AbstractHttpConfigurer::disable
                 )
+                // h2 접속하려면 필요함
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                // CORS
-                .cors(c -> {
-                    CorsConfigurationSource source = request -> {
-
-                        // Cors 허용
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(
-                                List.of("*")
-                        );
-                        config.setAllowedMethods(
-                                List.of("*")
-                        );
-                        return config;
-                    };
-                    c.configurationSource(source);
-                })
                 // 세션을 생성, 사용하지 않음
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests()
-                // 회원가입,로그인, h2 콘솔 접속 -> 모두 승인
-                .requestMatchers("/register", "/login", "/h2-console/**").permitAll()
-                // /admin 아래 요청 -> ADMIN 권한 보유 회원만 허용
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                // /user 아래 요청 -> USER 권한이 있는 회원만 허용
-                .requestMatchers("/user/**").hasRole("USER")
-                .anyRequest().denyAll()
-                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        // 회원가입,로그인, h2 콘솔 접속 -> 모두 승인
+                        .requestMatchers("/register", "/login").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        // /admin 아래 요청 -> ADMIN 권한 보유 회원만 허용
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // /user 아래 요청 -> USER 권한이 있는 회원만 허용
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().permitAll()
+                )
                 // JWT 인증 필터
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 // 에러 핸들링
