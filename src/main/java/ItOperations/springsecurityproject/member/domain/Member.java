@@ -32,8 +32,14 @@ public class Member {
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
 
+    // 권한 설정
     public void setRoles(List<Authority> role) {
         this.roles = role;
         role.forEach(o -> o.setMember(this));
+    }
+
+    // Refresh 토큰 설정
+    public void setRefreshToken(String token) {
+        this.refreshToken = token;
     }
 }

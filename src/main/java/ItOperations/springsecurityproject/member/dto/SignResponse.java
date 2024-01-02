@@ -2,6 +2,7 @@ package ItOperations.springsecurityproject.member.dto;
 
 import ItOperations.springsecurityproject.member.domain.Authority;
 import ItOperations.springsecurityproject.member.domain.Member;
+import ItOperations.springsecurityproject.security.token.TokenDto;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ public class SignResponse {
 
     private List<Authority> roles = new ArrayList<>();
 
-    private String refreshToken;
+    // access, refresh 토큰
+    private TokenDto token;
 
     public SignResponse(Member member) {
         this.id = member.getId();
