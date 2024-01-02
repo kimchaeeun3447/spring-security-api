@@ -18,3 +18,46 @@
 3. 브랜치생성 : feat/#이슈번호/티켓, 해당 브랜치에서 작업 후 commit ( commit 메시지엔 issue 번호 명시)
 4. develop 브랜치로 pull request할 때 Jira 티켓(이슈 키)들 명시하기 -> 지라 작업에 자동으로 커밋 기록됨
 5. 모든 작업 끝나면 main으로 merge
+
+
+### 환경 구성
+
+- 개발환경 : spring boot 3.2.1, java 21, JDK21,
+- 테스트 : JUnit5
+- 빌드 : Gradle
+- Dependency : spring web, spring security, jpa, lombok, h2
+
+
+### 폴더링
+```
+└── src
+  └── main
+   ├── java
+   │   └── com
+   │       └── example
+   │           └── springsecurityproject
+   │               ├── ItOperationsApplication.java
+   │               ├── common
+   │               │    ├── exception
+   │               │    ├── ApiUtils.java
+   │               │    └── CommonResponse.java
+   │               ├── member
+   │               │    ├── controller
+   │               │    ├── domain
+   │               │    ├── dto
+   │               │    ├── repository
+   │               │    └── service
+   │               └── security
+   │                    └── token
+   │                        ├── Token.java
+   │                        ├──TokenDto.java
+   │                        ├── TokenRepository.java
+   │                        └── TokenService.java
+   │                    ├── CustomUserDetails.java
+   │                    ├── JpaUserDetailsService.java
+   │                    ├── JwtAuthenticationFilter.java
+   │                    ├── JwtProvider.java
+   │                    └── SecurityConfig.java
+   └── resources
+       └── application.yml
+```
