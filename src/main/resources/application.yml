@@ -16,6 +16,11 @@ spring:
     properties:
       hibernate:
         format_sql: true # 쿼리 로그 포맷 (정렬)
+  data:
+    # Redis 사용을 위한 정보
+    redis:
+      host: localhost
+      port: 6379
 
 logging:
   Level:
