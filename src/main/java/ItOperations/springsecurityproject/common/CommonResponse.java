@@ -16,9 +16,17 @@ public class CommonResponse<T> {
     private String rtnMsg; // 응답 메시지
 
 
+    // 성공 response
     @Builder
     public CommonResponse(T result, int code, String message) {
         this.result = result;
+        this.rtnCode = code;
+        this.rtnMsg = message;
+    }
+
+    // 에러 response
+    @Builder
+    public CommonResponse(int code, String message) {
         this.rtnCode = code;
         this.rtnMsg = message;
     }
