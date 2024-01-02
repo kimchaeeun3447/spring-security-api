@@ -46,8 +46,8 @@ public class SecurityConfig {
                 // 세션을 생성, 사용하지 않음
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // 회원가입,로그인, h2 콘솔 접속 -> 모두 승인
-                        .requestMatchers("/register", "/login").permitAll()
+                        // 회원가입,로그인, 토큰 재발급, h2 콘솔 접속 -> 모두 승인
+                        .requestMatchers("/register", "/login", "/refresh").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         // /admin 아래 요청 -> ADMIN 권한 보유 회원만 허용
                         .requestMatchers("/admin/**").hasRole("ADMIN")
