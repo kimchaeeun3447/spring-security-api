@@ -1,7 +1,6 @@
 package ItOperations.springsecurityproject.security;
 
 import ItOperations.springsecurityproject.member.domain.Authority;
-import ItOperations.springsecurityproject.security.JpaUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -29,8 +28,8 @@ public class JwtProvider {
 
     private Key secretKey;
 
-    // JWT 만료 시간 - 1시간
-    private final long exp = 1000L * 60;
+    // access 토큰 만료 시간 - 2분
+    private final long exp = 1000L * 120; // 1초 * 120 = 2분
 
     private final JpaUserDetailsService jpaUserDetailsService;
 
@@ -39,7 +38,7 @@ public class JwtProvider {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
-    // JWT 생성
+    // access 토큰 생성
     public String createToken(String accountId, List<Authority> roles) {
         Claims claims = Jwts.claims().setSubject(accountId);
         claims.put("roles", roles);
@@ -52,11 +51,12 @@ public class JwtProvider {
                 .compact();
     }
 
-    // JWT에서 회원의 accountId 획득
+    // access 토큰에서 회원의 accountId 획득
     public String getAccount(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
-        } catch (ExpiredJwtException e) { // 만료된 토큰일 경우
+        } catch (ExpiredJwtException e) {
+            // 만료된 access 토큰일 경우 -> accountId 반환 : refreshAccessToken에서 재발급된다.
             e.printStackTrace();
 
             return e.getClaims().getSubject();
