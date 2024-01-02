@@ -19,7 +19,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
 
         Member member = memberRepository.findByAccountId(accountId).orElseThrow(
-                () -> new UsernameNotFoundException("[JpaUserDetailsService] Invalid Authentication")
+                () -> new UsernameNotFoundException("security: Invalid Authentication")
         );
 
         return new CustomUserDetails(member);
