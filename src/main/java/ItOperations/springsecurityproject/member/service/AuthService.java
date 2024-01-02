@@ -7,7 +7,6 @@ import ItOperations.springsecurityproject.member.dto.SignRequest;
 import ItOperations.springsecurityproject.member.dto.SignResponse;
 import ItOperations.springsecurityproject.member.repository.MemberRepository;
 import ItOperations.springsecurityproject.security.JwtProvider;
-import ItOperations.springsecurityproject.security.token.Token;
 import ItOperations.springsecurityproject.security.token.TokenDto;
 import ItOperations.springsecurityproject.security.token.TokenService;
 import jakarta.transaction.Transactional;
@@ -79,5 +78,14 @@ public class AuthService {
             System.out.println(e.getMessage());
             throw new Exception("잘못된 요청입니다.");
         }
+    }
+
+    // 사용자 정보 조회 API - 계정 아이디로 조회
+    public SignResponse getMember(String accountId) throws Exception {
+        Member member = memberRepository.findByAccountId(accountId).orElseThrow(() ->
+                new Exception("존재하지 않는 계정 ID 입니다.")
+        );
+
+        return new SignResponse(member);
     }
 }

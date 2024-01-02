@@ -67,7 +67,7 @@ public class JwtProvider {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Authorization Header로 받은 JWT 추출
+    // Request Header의 Authorization에서 받은 JWT 추출
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
