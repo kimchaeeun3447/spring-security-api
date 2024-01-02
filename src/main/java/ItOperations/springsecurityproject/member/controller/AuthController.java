@@ -37,4 +37,17 @@ public class AuthController {
     public ResponseEntity<TokenDto> refresh(@RequestBody TokenDto tokenDto) throws Exception {
         return new ResponseEntity<>(tokenService.refreshAccessToken(tokenDto), HttpStatus.OK);
     }
+
+    // 요청 보낸 token이 인증되었고, 권한에 맞는 URL로 요청할 경우에 접근 가능
+    // 사용자 정보 조회 API - USER 권한이 있는 회원만
+    @GetMapping(value = "/user/info")
+    public ResponseEntity<SignResponse> getUser(@RequestBody LoginRequest request) throws Exception {
+        return new ResponseEntity<>(authService.getMember(request.getBody().getId()), HttpStatus.OK);
+    }
+
+    // 관리자 정보 조회 API - ADMIN 권한이 있는 회원만
+    @GetMapping(value = "/admin/info")
+    public ResponseEntity<SignResponse> getAdmin(@RequestBody LoginRequest request) throws Exception {
+        return new ResponseEntity<>(authService.getMember(request.getBody().getId()), HttpStatus.OK);
+    }
 }

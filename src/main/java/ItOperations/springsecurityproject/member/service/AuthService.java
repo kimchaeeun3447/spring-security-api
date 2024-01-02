@@ -79,4 +79,13 @@ public class AuthService {
             throw new Exception("잘못된 요청입니다.");
         }
     }
+
+    // 사용자 정보 조회 API - 계정 아이디로 조회
+    public SignResponse getMember(String accountId) throws Exception {
+        Member member = memberRepository.findByAccountId(accountId).orElseThrow(() ->
+                new Exception("존재하지 않는 계정 ID 입니다.")
+        );
+
+        return new SignResponse(member);
+    }
 }
