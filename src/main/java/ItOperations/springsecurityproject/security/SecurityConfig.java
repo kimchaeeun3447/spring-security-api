@@ -1,5 +1,8 @@
 package ItOperations.springsecurityproject.security;
 
+import ItOperations.springsecurityproject.common.ApiUtils;
+import ItOperations.springsecurityproject.common.CommonResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,12 +25,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
+import static ItOperations.springsecurityproject.common.exception.ErrorCode.ACCESS_FORBIDDEN;
+import static ItOperations.springsecurityproject.common.exception.ErrorCode.AUTHENTICATION_UNAUTHORIZED;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,26 +62,29 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 // 에러 핸들링
                 .exceptionHandling(exceptionHandling -> {
-                    exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
-                            @Override
-                            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                                // 권한 문제 발생 시 403
-                                response.setStatus(403);
-                                response.setCharacterEncoding("utf-8");
-                                response.setContentType("text/html; charset=UTF-8");
-                                response.getWriter().write("권한이 없는 사용자입니다.");
-                            }
-                        }
-                    );
-
-                    exceptionHandling.authenticationEntryPoint(new AuthenticationEntryPoint() {
+                    exceptionHandling.authenticationEntryPoint(new AuthenticationEntryPoint() { // 인증
                         @Override
                         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
                             // 인증문제 발생 시 401
                             response.setStatus(401);
                             response.setCharacterEncoding("utf-8");
-                            response.setContentType("text/html; charset=UTF-8");
-                            response.getWriter().write("인증되지 않은 사용자입니다.");
+                            response.setContentType("application/json; charset=UTF-8");
+
+                            // Response 형식에 맞게 변형
+                            CommonResponse<Integer> responseBody = ApiUtils.fail(AUTHENTICATION_UNAUTHORIZED.getStatus(), AUTHENTICATION_UNAUTHORIZED.getMessage());
+                            response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+                        }
+                    });
+                    exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() { //인가
+                        @Override
+                        public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                            // 권한 문제 발생 시 403
+                            response.setStatus(403);
+                            response.setCharacterEncoding("utf-8");response.setContentType("application/json; charset=UTF-8");
+
+                            // Response 형식에 맞게 변형
+                            CommonResponse<Integer> responseBody = ApiUtils.fail(ACCESS_FORBIDDEN.getStatus(), ACCESS_FORBIDDEN.getMessage());
+                            response.getWriter().write(objectMapper.writeValueAsString(responseBody));
                         }
                     });
                 });

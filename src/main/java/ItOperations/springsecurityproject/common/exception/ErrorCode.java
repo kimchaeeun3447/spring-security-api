@@ -13,6 +13,9 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "서버 내부 에러입니다."),
 
     // Security, JWT
+    AUTHENTICATION_UNAUTHORIZED(401, "Security: authenticationEntryPoint 인증되지 않은 사용자입니다."),
+    ACCESS_FORBIDDEN(403, "Security: accessDeniedHandler 권한이 없는 사용자입니다."),
+
     UNAUTHORIZED_MEMBER(401, "인증되지 않은 사용자입니다."),
     FORBIDDEN_MEMBER(403, "권한이 없는 사용자입니다."),
     INVALID_REFRESH_TOKEN(403, "토큰이 유효하지 않습니다. 재로그인이 필요합니다."),
