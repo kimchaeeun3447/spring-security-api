@@ -1,5 +1,7 @@
 package ItOperations.springsecurityproject.security.token;
 
+import ItOperations.springsecurityproject.common.exception.CustomException;
+import ItOperations.springsecurityproject.common.exception.ErrorCode;
 import ItOperations.springsecurityproject.member.domain.Member;
 import ItOperations.springsecurityproject.member.repository.MemberRepository;
 import ItOperations.springsecurityproject.security.JwtProvider;
@@ -36,7 +38,7 @@ public class TokenService {
     public Token validRefreshToken(Member member, String refreshToken) throws Exception {
         // Member 고유 객체 id값으로 Token 조회
         Token token = tokenRepository.findById(member.getId()).orElseThrow(() ->
-                new Exception("만료된 토큰입니다. 재로그인이 필요합니다.")
+                new CustomException(ErrorCode.NOT_FOUND_TOKEN)
         );
 
         // 해당유저의 refresh 토큰 만료 : Redis에 해당 유저의 토큰이 존재하지 않음
@@ -80,7 +82,7 @@ public class TokenService {
                     .build();
         } else {
             // refreshToken 결과가 null이라면 -> 유효하지 않은 리프레시 토큰이니까 재발급 요청 필요
-            throw new Exception("유효하지 않은 토큰입니다. 재로그인이 필요합니다.");
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
     }
 }

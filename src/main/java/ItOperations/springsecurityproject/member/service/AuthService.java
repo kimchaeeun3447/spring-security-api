@@ -1,5 +1,7 @@
 package ItOperations.springsecurityproject.member.service;
 
+import ItOperations.springsecurityproject.common.exception.CustomException;
+import ItOperations.springsecurityproject.common.exception.ErrorCode;
 import ItOperations.springsecurityproject.member.domain.Authority;
 import ItOperations.springsecurityproject.member.domain.Member;
 import ItOperations.springsecurityproject.member.dto.LoginRequest;
@@ -9,6 +11,7 @@ import ItOperations.springsecurityproject.member.repository.MemberRepository;
 import ItOperations.springsecurityproject.security.JwtProvider;
 import ItOperations.springsecurityproject.security.token.TokenDto;
 import ItOperations.springsecurityproject.security.token.TokenService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,7 +31,7 @@ public class AuthService {
     private final TokenService tokenService;
 
     // 로그인 인증
-    public SignResponse login(LoginRequest request) throws Exception {
+    public SignResponse login(LoginRequest request) {
         // 계정 아이디로 Member 조회
         Member member = memberRepository.findByAccountId(request.getBody().getId()).orElseThrow(() ->
                 new BadCredentialsException("잘못된 아이디입니다."));
@@ -55,7 +58,7 @@ public class AuthService {
     }
 
     // 회원가입
-    public SignResponse register(SignRequest request) throws Exception {
+    public SignResponse register(SignRequest request) {
         try {
             Member member = Member.builder()
                     .accountId(request.getId())
@@ -76,14 +79,14 @@ public class AuthService {
                     .build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
+            throw new CustomException(ErrorCode.BAD_REQUEST);
         }
     }
 
     // 사용자 정보 조회 API - 계정 아이디로 조회
-    public SignResponse getMember(String accountId) throws Exception {
+    public SignResponse getMember(String accountId) {
         Member member = memberRepository.findByAccountId(accountId).orElseThrow(() ->
-                new Exception("존재하지 않는 계정 ID 입니다.")
+                new CustomException(ErrorCode.NOT_FOUND_MEMBER)
         );
 
         return new SignResponse(member);
