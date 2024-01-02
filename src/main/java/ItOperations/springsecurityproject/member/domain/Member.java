@@ -3,6 +3,10 @@ package ItOperations.springsecurityproject.member.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/* 엔티티 : 회원 */
 @Entity
 @Getter
 @Builder
@@ -23,4 +27,19 @@ public class Member {
     private String email;           // 이메일
 
     private String refreshToken;    // Refresh 토큰
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Authority> roles = new ArrayList<>();
+
+    // 권한 설정
+    public void setRoles(List<Authority> role) {
+        this.roles = role;
+        role.forEach(o -> o.setMember(this));
+    }
+
+    // Refresh 토큰 설정
+    public void setRefreshToken(String token) {
+        this.refreshToken = token;
+    }
 }
