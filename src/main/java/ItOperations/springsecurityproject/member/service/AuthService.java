@@ -7,7 +7,6 @@ import ItOperations.springsecurityproject.member.dto.SignRequest;
 import ItOperations.springsecurityproject.member.dto.SignResponse;
 import ItOperations.springsecurityproject.member.repository.MemberRepository;
 import ItOperations.springsecurityproject.security.JwtProvider;
-import ItOperations.springsecurityproject.security.token.Token;
 import ItOperations.springsecurityproject.security.token.TokenDto;
 import ItOperations.springsecurityproject.security.token.TokenService;
 import jakarta.transaction.Transactional;

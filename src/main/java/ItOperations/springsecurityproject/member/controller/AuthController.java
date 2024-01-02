@@ -3,7 +3,6 @@ package ItOperations.springsecurityproject.member.controller;
 import ItOperations.springsecurityproject.member.dto.LoginRequest;
 import ItOperations.springsecurityproject.member.dto.SignRequest;
 import ItOperations.springsecurityproject.member.dto.SignResponse;
-import ItOperations.springsecurityproject.member.repository.MemberRepository;
 import ItOperations.springsecurityproject.member.service.AuthService;
 import ItOperations.springsecurityproject.security.token.TokenDto;
 import ItOperations.springsecurityproject.security.token.TokenService;
