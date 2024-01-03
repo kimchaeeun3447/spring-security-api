@@ -48,16 +48,16 @@
    │               │    ├── repository
    │               │    └── service
    │               └── security
-   │                    └── token
-   │                        ├── Token.java
-   │                        ├──TokenDto.java
-   │                        ├── TokenRepository.java
-   │                        └── TokenService.java
-   │                    ├── CustomUserDetails.java
-   │                    ├── JpaUserDetailsService.java
-   │                    ├── JwtAuthenticationFilter.java
-   │                    ├── JwtProvider.java
-   │                    └── SecurityConfig.java
+   │                   ├── token
+   │                   │       ├── Token.java
+   │                   │       ├── TokenDto.java
+   │                   │       ├── TokenRepository.java
+   │                   │       └── TokenService.java
+   │ 	 ├── CustomUserDetails.java
+   │                   ├──  JpaUserDetailsService.java
+   │                   ├── JwtAuthenticationFilter.java
+   │                   ├── JwtProvider.java
+   │                   └── SecurityConfig.java
    └── resources
        └── application.yml
 ```
