@@ -22,10 +22,10 @@
 
 ### 환경 구성
 
-- 개발환경 : spring boot 3.2.1, java 21, JDK21,
-- 테스트 : JUnit5
-- 빌드 : Gradle
-- Dependency : spring web, spring security, jpa, lombok, h2
+- 개발환경 : Spring Boot 3.2.1, Java 21, JDK21
+- 빌드 관리 : Gradle
+- Dependency : Spring Web, Spring Security, JPA, Lombok, H2
+
 
 
 ### 폴더링
