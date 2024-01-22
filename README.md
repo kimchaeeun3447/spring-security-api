@@ -23,7 +23,7 @@
 
 - 개발 환경 : Spring Boot 3.2.1, Java 21, JDK21
 - 빌드 관리 : Gradle
-- Dependency : Spring Web, Spring Security, JPA, Lombok, H2
+- Dependency : Spring Web, Spring Security, JPA, Lombok, H2, Redis
 - 프로젝트 관리 : Jira, Confluence
 
 
